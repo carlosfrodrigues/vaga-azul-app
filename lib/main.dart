@@ -30,10 +30,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // ADD THIS
+
   MapController mapController = MapController();
   UserLocationOptions userLocationOptions;
-  // ADD THIS
+
   List<Marker> markers = [];
   List<Vacancy> fromServer;
   StreamController<LatLng> markerLocationStream = StreamController();
@@ -47,8 +47,7 @@ class _HomePageState extends State<HomePage> {
         final response = http.delete("https://vaga-azul.herokuapp.com/api/v1/vacancies/" + fromServer[i].id.toString(),
             headers: {"Content-Type": "application/json"}
         );
-        //markers.removeWhere((item) => item.point.latitude == lat && item.point.longitude == long);
-        //markers.removeWhere((item) => item.height == 40.0);
+
         markers = [];
         response.then((value){
           if (value.statusCode == 200){
@@ -110,23 +109,6 @@ class _HomePageState extends State<HomePage> {
             setState(() {});
         });
         print(response);
-        /*
-        markers.add(new Marker(
-          width: 40.0,
-          height: 40.0,
-          point: LatLng(value.latitude, value.longitude),
-          builder: (ctx) => Container(
-            child: IconButton(
-              icon: Icon(Icons.location_on),
-              color: Colors.blue,
-              iconSize: 40.0,
-              onPressed: () {
-                delete(value.latitude, value.longitude);
-              },
-            ),
-          ),
-        ));
-        */
 
       }else{
 
@@ -199,12 +181,12 @@ class _HomePageState extends State<HomePage> {
                 'id': 'mapbox.streets',
               },
             ),
-            // ADD THIS
+
             MarkerLayerOptions(markers: markers),
-            // ADD THIS
+
             userLocationOptions,
           ],
-          // ADD THIS
+
           mapController: mapController,
         );
       }
@@ -213,10 +195,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // You can use the userLocationOptions object to change the properties
-    // of UserLocationOptions in runtime
-    userLocationOptions = UserLocationOptions(
 
+    userLocationOptions = UserLocationOptions(
       updateMapLocationOnPositionChange: true,
       context: context,
       mapController: mapController,
@@ -238,8 +218,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-
 Future<List<Vacancy>> fetchVacancies(http.Client client) async {
   final response = await client.get(
       'https://vaga-azul.herokuapp.com/api/v1/vacancies/');
@@ -250,4 +228,3 @@ List<Vacancy> parseVacancies(String responseBody){
 
   return parsed.map<Vacancy>((json) => Vacancy.fromJSON(json)).toList();
 }
-
